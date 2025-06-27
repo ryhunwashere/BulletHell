@@ -1,59 +1,52 @@
-#include "raylib.h"
+#include <raylib.h>
+#include <stdio.h>
 
-//------------------------------------------------------------------------------------------
-// Types and Structures Definition
-//------------------------------------------------------------------------------------------
-typedef enum GameScreen
-{
-    MENU,
-    GAMEPLAY
-} GameScreen;
+#include "bullet.h"
+#include "player.h"
 
+float bulletVelocity = 800.0f;
+float shootCooldown = 0.05f;
+float shootTimer = 0.0f;
 
-//------------------------------------------------------------------------------------
-// Program main entry point
-//------------------------------------------------------------------------------------
 int main()
 {
-    int screenWidth = 1360;
-    int screenHeight = 720;
+    InitWindow(1280, 720, "Raylib Bullet Hell Test");
+    InitBullets();
 
-    // Initialization
-    //----------------------------------------------------------------------------------
-    InitWindow(screenWidth, screenHeight, "Raylib Test Window");
+    Player player;
+    InitPlayer(&player);
+
     SetTargetFPS(60);
-    Texture2D playerTexture = LoadTexture("../assets/player/ReimuTopdown.png");
-    Vector2 playerPosition = {100, 200};
-    //----------------------------------------------------------------------------------
 
-    // Main game loop
     while (!WindowShouldClose())
     {
-        // Update
-        //----------------------------------------------------------------------------------
-        float playerSpeed = 200.0f;
+        float dt = GetFrameTime();
+        shootTimer += dt;
 
-        if (IsKeyDown(KEY_RIGHT))
-            playerPosition.x += (playerSpeed * GetFrameTime());
-        if (IsKeyDown(KEY_LEFT))
-            playerPosition.x -= (playerSpeed * GetFrameTime());
-        if (IsKeyDown(KEY_UP))
-            playerPosition.y -= (playerSpeed * GetFrameTime());
-        if (IsKeyDown(KEY_DOWN))
-            playerPosition.y += (playerSpeed * GetFrameTime());
-        //----------------------------------------------------------------------------------
+        // Update player movement
+        UpdatePlayer(&player, dt);
+
+        // Shoot bullet
+        if (IsKeyDown(KEY_X) && shootTimer >= shootCooldown)
+        {
+            Vector2 spawnPos = PlayerGetBulletSpawnPos(&player);
+            Vector2 bulletDirection = { 0, -1 };
+            SpawnBullet(spawnPos, bulletDirection);
+            shootTimer = 0.0f;
+        }
+
+        UpdateBullets(dt, bulletVelocity, 720);
 
         // Draw
-        //----------------------------------------------------------------------------------
         BeginDrawing();
-        DrawFPS(10, 10);
         ClearBackground(RAYWHITE);
-        DrawTextureV(playerTexture, playerPosition, WHITE);
-        EndDrawing();
-        //----------------------------------------------------------------------------------
-    }
 
-    UnloadTexture(playerTexture);
+        DrawPlayer(&player);
+        DrawBullets();
+
+        DrawFPS(10, 10);
+        EndDrawing();
+    }
 
     CloseWindow();
     return 0;
