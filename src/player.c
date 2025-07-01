@@ -7,7 +7,7 @@ void InitPlayer(Player *player)
     player->position = (Vector2){500, 500};
     player->baseSpeed = 500.0f;
     player->hitboxRadius = 4.0f * PLAYER_SCALE;
-    player->grazeRadius = 16.0f* PLAYER_SCALE;
+    player->grazeRadius = 16.0f * PLAYER_SCALE;
     player->texture = LoadTexture("../assets/player/player_sprite.png");
 }
 
@@ -66,10 +66,10 @@ void DrawPlayer(Player *player)
     }
 }
 
-Vector2 PlayerGetBulletSpawnPos(Player *player, float paddingTop)
+Vector2 PlayerGetBulletSpawnPos(Player *player, float offsetX, float offsetY)
 {
     float scaledHeight = player->texture.height * PLAYER_SCALE;
 
-    // Top middle → center.x, center.y - half height - paddingTop
-    return (Vector2){player->position.x, player->position.y - (scaledHeight / 2.0f) - paddingTop};
+    // Top middle → center.x, center.y - half height - offsetY
+    return (Vector2){player->position.x + offsetX, player->position.y - (scaledHeight / 2.0f) - offsetY};
 }

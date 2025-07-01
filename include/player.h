@@ -11,7 +11,14 @@ typedef struct Player
     Texture2D texture;
 } Player;
 
-void InitPlayer(Player* player);                                    // Create & initialize player
-void UpdatePlayer(Player* player);                                  // Update player every frame
-void DrawPlayer(Player* player);                                    // Draw player's sprite
-Vector2 PlayerGetBulletSpawnPos(Player* player, float paddingTop);  // Make bullets spawn from top middle of player
+// Create & initialize player.
+void InitPlayer(Player* player);
+
+// Update player every frame.
+void UpdatePlayer(Player* player);
+
+// Draw player's sprite.
+void DrawPlayer(Player* player);
+
+// Set X and Y offset of bullet spawn position relative to the center of player.
+Vector2 PlayerGetBulletSpawnPos(Player* player, float offsetX, float offsetY);

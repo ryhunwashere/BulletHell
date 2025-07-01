@@ -6,8 +6,8 @@
 #include "bullet_player.h"
 #include "audio.h"
 
-float bulletVelocity = 600.0f;
-float shootCooldown = 0.1f;
+float bulletVelocity = 1000.0f;
+float shootCooldown = 0.08f;
 float shootTimer = 0.0f;
 
 int main()
@@ -39,19 +39,17 @@ int main()
         // Shoot bullet
         if (IsKeyDown(KEY_X) && shootTimer >= shootCooldown)
         {
-            Vector2 playerPos = PlayerGetBulletSpawnPos(&player, 0);
+            Vector2 bulletMidPos = PlayerGetBulletSpawnPos(&player, 0, 10);
+            Vector2 bulletLeftPos = PlayerGetBulletSpawnPos(&player, -40, 10);
+            Vector2 bulletRightPos = PlayerGetBulletSpawnPos(&player, 40, 10);
 
-            Vector2 bulletMidDirection = { 0, -1 };
-            Vector2 bulletDiagLeftDirection = { -0.5, -1 };
-            Vector2 bulletDiagRightDirection = { 0.5, -1 };
-            Vector2 bulletRightDirection = { 1, 0 };
-            Vector2 bulletLeftDirection = { -1, 0 };
+            Vector2 bulletMidDir = { 0, -1 };
+            Vector2 bulletLeftDir = { 0, -1 };
+            Vector2 bulletRightDir = { 0, -1 };
 
-            SpawnPlayerBulletCircle(playerPos, bulletMidDirection, bulletVelocity, 10, circleBulletSprite);
-            SpawnPlayerBulletRect(playerPos, bulletDiagLeftDirection, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
-            SpawnPlayerBulletRect(playerPos, bulletDiagRightDirection, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
-            SpawnPlayerBulletCircle(playerPos, bulletRightDirection, bulletVelocity, 10, circleBulletSprite);
-            SpawnPlayerBulletCircle(playerPos, bulletLeftDirection, bulletVelocity, 10, circleBulletSprite);
+            SpawnPlayerBulletCircle(bulletMidPos, bulletMidDir, bulletVelocity, 10, circleBulletSprite);
+            SpawnPlayerBulletRect(bulletLeftPos, bulletLeftDir, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
+            SpawnPlayerBulletRect(bulletRightPos, bulletRightDir, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
 
             PlaySoundFX(0);
 
