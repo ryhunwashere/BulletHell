@@ -1,50 +1,70 @@
 #include <raylib.h>
 #include <stdio.h>
 
-#include "bullet.h"
 #include "player.h"
+#include "bullet_player.h"
+#include "audio.h"
 
-float bulletVelocity = 800.0f;
+float bulletVelocity = 600.0f;
 float shootCooldown = 0.05f;
 float shootTimer = 0.0f;
 
+int SCREEN_WIDTH = 1280;
+int SCREEN_HEIGHT = 720;
+
 int main()
 {
-    InitWindow(1280, 720, "Raylib Bullet Hell Test");
-    InitBullets();
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib Bullet Hell Test");
+    InitPlayerBullets();
 
     Player player;
     InitPlayer(&player);
+
+    Texture2D circleBulletSprite = LoadTexture("../assets/bullets/CircleBullet1.png");
+    Texture2D rectBulletSprite = LoadTexture("../assets/bullets/PlayerBullet1.png");
+    Vector2 rectBulletSize = { 50, 20 };
 
     SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
-        float dt = GetFrameTime();
-        shootTimer += dt;
+        float deltaTime = GetFrameTime();
+        shootTimer += GetFrameTime();
 
         // Update player movement
-        UpdatePlayer(&player, dt);
+        UpdatePlayer(&player);
 
         // Shoot bullet
         if (IsKeyDown(KEY_X) && shootTimer >= shootCooldown)
         {
-            Vector2 spawnPos = PlayerGetBulletSpawnPos(&player);
-            Vector2 bulletDirection = { 0, -1 };
-            SpawnBullet(spawnPos, bulletDirection);
+            Vector2 playerPos = PlayerGetBulletSpawnPos(&player);
+
+            Vector2 bulletMidDirection = { 0, -1 };
+            Vector2 bulletDiagLeftDirection = { -0.5, -1 };
+            Vector2 bulletDiagRightDirection = { 0.5, -1 };
+            Vector2 bulletRightDirection = { 1, 0 };
+            Vector2 bulletLeftDirection = { -1, 0 };
+
+            SpawnPlayerBulletCircle(playerPos, bulletMidDirection, bulletVelocity, 10, circleBulletSprite);
+            SpawnPlayerBulletRect(playerPos, bulletDiagLeftDirection, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
+            SpawnPlayerBulletRect(playerPos, bulletDiagRightDirection, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
+            SpawnPlayerBulletCircle(playerPos, bulletRightDirection, bulletVelocity, 10, circleBulletSprite);
+            SpawnPlayerBulletCircle(playerPos, bulletLeftDirection, bulletVelocity, 10, circleBulletSprite);
+
             shootTimer = 0.0f;
         }
 
-        UpdateBullets(dt, bulletVelocity, 720);
+        UpdatePlayerBullet(deltaTime);
 
         // Draw
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
 
         DrawPlayer(&player);
-        DrawBullets();
+        DrawPlayerBullet();
 
         DrawFPS(10, 10);
+        DrawText(TextFormat("Active bullets: %d", CountActivePlayerBullets()), 10, 40, 20, WHITE);
         EndDrawing();
     }
 

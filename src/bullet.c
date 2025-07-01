@@ -1,50 +1,98 @@
 #include "bullet.h"
+#include <math.h> // for atan2f function
+#include <stdio.h>
 
-Bullet bullets[MAX_BULLETS] = {0};
+static Texture2D gDefaultCircleTexture = {0};
+static Texture2D gDefaultRectTexture = {0};
 
-void InitBullets()
+// Local master function for spawning bullets
+static void spawnBullet(Bullet bullets[], int maxBullets, Vector2 spawnPos, Vector2 direction, float speed, BulletType type, float radius, Vector2 size, float rotation, Texture2D sprite)
 {
-    for (int i = 0; i < MAX_BULLETS; i++)
+    // If rotation is set to 0, bullets will automatically face the direction it is heading to
+    if (rotation == 0)
     {
-        bullets[i].active = false;
+        rotation = atan2f(direction.y, direction.x) * RAD2DEG;
     }
-}
 
-void SpawnBullet(Vector2 spawnPos, Vector2 direction)
-{
-    for (int i = 0; i < MAX_BULLETS; i++)
+    for (int i = 0; i < maxBullets; i++)
     {
-        if (!bullets[i].active) // Find inactive bullets
+        if (!bullets[i].active)
         {
             bullets[i].position = spawnPos;
             bullets[i].direction = direction;
+            bullets[i].speed = speed;
+            bullets[i].type = type;
+            bullets[i].radius = radius;
+            bullets[i].size = size;
+            bullets[i].rotation = rotation;
+            bullets[i].sprite = sprite;
             bullets[i].active = true;
+            // printf("Spawned bullet at: (%.1f, %.1f), speed=%.1f, rotation=%.1f, sprite.id=%d\n", spawnPos.x, spawnPos.y, speed, rotation, sprite.id);
             break;
         }
     }
 }
 
-void UpdateBullets(float deltaTime, float bulletVelocity, int screenHeight)
+void InitBullets(Bullet bullets[], int maxBullets)
 {
-    for (int i = 0; i < MAX_BULLETS; i++)
-    {
-        bullets[i].position.x += bullets[i].direction.x * bulletVelocity * deltaTime;
-        bullets[i].position.y += bullets[i].direction.y * bulletVelocity * deltaTime;
+    for (int i = 0; i < maxBullets; i++)
+        bullets[i].active = false;
+}
 
-        if (bullets[i].position.y < 0 || bullets[i].position.y > screenHeight) // Deactivate bullet if goes beyond screen height
+void SetBulletDefaultTextures(Texture2D circleTexture, Texture2D rectTexture)
+{
+    gDefaultCircleTexture = circleTexture;
+    gDefaultRectTexture = rectTexture;
+}
+
+void SpawnBulletCircle(Bullet bullets[], int maxBullets, Vector2 spawnPos, Vector2 direction, float speed, float radius, Texture2D sprite)
+{
+    if (sprite.id == 0)
+        sprite = gDefaultCircleTexture;
+    spawnBullet(bullets, maxBullets, spawnPos, direction, speed, BULLET_CIRCLE, radius, (Vector2){radius * 2, radius * 2}, 0, sprite);
+}
+
+void SpawnBulletRect(Bullet bullets[], int maxBullets, Vector2 spawnPos, Vector2 direction, float speed, Vector2 size, float rotation, Texture2D sprite)
+{
+    if (sprite.id == 0)
+        sprite = gDefaultRectTexture;
+    spawnBullet(bullets, maxBullets, spawnPos, direction, speed, BULLET_RECT, 0, size, rotation, sprite);
+}
+
+void UpdateBullet(Bullet bullets[], int maxBullets, float deltaTime, int screenWidth, int screenHeight)
+{
+    for (int i = 0; i < maxBullets; i++)
+    {
+        if (bullets[i].active)
         {
-            bullets[i].active = false;
+            bullets[i].position.x += bullets[i].direction.x * bullets[i].speed * deltaTime;
+            bullets[i].position.y += bullets[i].direction.y * bullets[i].speed * deltaTime;
+
+            if (bullets[i].position.x > screenWidth || bullets[i].position.x < 0 || bullets[i].position.y > screenHeight || bullets[i].position.y < 0)
+            {
+                bullets[i].active = false;
+                // printf("Bullet %d active at pos: (%.1f, %.1f)\n", i, bullets[i].position.x, bullets[i].position.y);
+            }
         }
     }
 }
 
-void DrawBullets()
+void DrawBullet(Bullet bullets[], int maxBullets)
 {
-    for (int i = 0; i < MAX_BULLETS; i++)
+    for (int i = 0; i < maxBullets; i++)
     {
         if (bullets[i].active)
         {
-            DrawCircleV(bullets[i].position, 5, RED);
+            Bullet *b = &bullets[i];
+
+            DrawTexturePro(b->sprite,
+                           (Rectangle){0, 0, b->sprite.width, b->sprite.height},            // source
+                           (Rectangle){b->position.x, b->position.y, b->size.x, b->size.y}, // dest
+                           (Vector2){b->size.x / 2, b->size.y / 2},                         // origin
+                           b->rotation,
+                           WHITE);
+            
+            // printf("Drawing bullet with sprite.id=%d, size=(%.1f, %.1f)\n", b->sprite.id, b->size.x, b->size.y);
         }
     }
 }

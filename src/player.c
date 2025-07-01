@@ -8,17 +8,17 @@ void InitPlayer(Player* player)
     player->texture = LoadTexture("../assets/player/player.png");
 }
 
-void UpdatePlayer(Player* player, float dt)
+void UpdatePlayer(Player* player)
 {
     float speed = player->baseSpeed;
 
     if (IsKeyDown(KEY_LEFT_SHIFT))
         speed *= 0.5f;
 
-    if (IsKeyDown(KEY_RIGHT)) player->position.x += speed * dt;
-    if (IsKeyDown(KEY_LEFT))  player->position.x -= speed * dt;
-    if (IsKeyDown(KEY_UP))    player->position.y -= speed * dt;
-    if (IsKeyDown(KEY_DOWN))  player->position.y += speed * dt;
+    if (IsKeyDown(KEY_RIGHT)) player->position.x += speed * GetFrameTime();
+    if (IsKeyDown(KEY_LEFT))  player->position.x -= speed * GetFrameTime();
+    if (IsKeyDown(KEY_UP))    player->position.y -= speed * GetFrameTime();
+    if (IsKeyDown(KEY_DOWN))  player->position.y += speed * GetFrameTime();
 }
 
 void DrawPlayer(Player* player)

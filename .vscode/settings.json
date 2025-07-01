@@ -7,7 +7,17 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c",
-        "variant": "c"
+        "variant": "c",
+        "player.h": "c",
+        "bullet.h": "c",
+        "string_view": "c",
+        "format": "c",
+        "initializer_list": "c",
+        "ranges": "c",
+        "span": "c",
+        "math.h": "c",
+        "cmath": "c",
+        "raylib.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
