@@ -27,7 +27,6 @@ static void spawnBullet(Bullet bullets[], int maxBullets, Vector2 spawnPos, Vect
             bullets[i].rotation = rotation;
             bullets[i].sprite = sprite;
             bullets[i].active = true;
-            // printf("Spawned bullet at: (%.1f, %.1f), speed=%.1f, rotation=%.1f, sprite.id=%d\n", spawnPos.x, spawnPos.y, speed, rotation, sprite.id);
             break;
         }
     }
@@ -71,7 +70,6 @@ void UpdateBullet(Bullet bullets[], int maxBullets, float deltaTime, int screenW
             if (bullets[i].position.x > screenWidth || bullets[i].position.x < 0 || bullets[i].position.y > screenHeight || bullets[i].position.y < 0)
             {
                 bullets[i].active = false;
-                // printf("Bullet %d active at pos: (%.1f, %.1f)\n", i, bullets[i].position.x, bullets[i].position.y);
             }
         }
     }

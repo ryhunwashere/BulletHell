@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include "config.h"
 #include <stdio.h>
 
 static Bullet playerBullets[MAX_PLAYER_BULLETS];
@@ -20,7 +21,7 @@ void SpawnPlayerBulletRect(Vector2 spawnPosition, Vector2 direction, float speed
 
 void UpdatePlayerBullet(float deltaTime)
 {
-    UpdateBullet(playerBullets, MAX_PLAYER_BULLETS, deltaTime, 1280, 720);
+    UpdateBullet(playerBullets, MAX_PLAYER_BULLETS, deltaTime, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void DrawPlayerBullet()

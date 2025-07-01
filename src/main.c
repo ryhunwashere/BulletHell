@@ -1,21 +1,21 @@
 #include <raylib.h>
 #include <stdio.h>
 
+#include "config.h"
 #include "player.h"
 #include "bullet_player.h"
 #include "audio.h"
 
 float bulletVelocity = 600.0f;
-float shootCooldown = 0.05f;
+float shootCooldown = 0.1f;
 float shootTimer = 0.0f;
-
-int SCREEN_WIDTH = 1280;
-int SCREEN_HEIGHT = 720;
 
 int main()
 {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib Bullet Hell Test");
     InitPlayerBullets();
+    InitAudioComponents();
+    PlayMusicTrack(0);
 
     Player player;
     InitPlayer(&player);
@@ -31,13 +31,15 @@ int main()
         float deltaTime = GetFrameTime();
         shootTimer += GetFrameTime();
 
+        UpdateMusicPlayer();
+
         // Update player movement
         UpdatePlayer(&player);
 
         // Shoot bullet
         if (IsKeyDown(KEY_X) && shootTimer >= shootCooldown)
         {
-            Vector2 playerPos = PlayerGetBulletSpawnPos(&player);
+            Vector2 playerPos = PlayerGetBulletSpawnPos(&player, 0);
 
             Vector2 bulletMidDirection = { 0, -1 };
             Vector2 bulletDiagLeftDirection = { -0.5, -1 };
@@ -50,6 +52,8 @@ int main()
             SpawnPlayerBulletRect(playerPos, bulletDiagRightDirection, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
             SpawnPlayerBulletCircle(playerPos, bulletRightDirection, bulletVelocity, 10, circleBulletSprite);
             SpawnPlayerBulletCircle(playerPos, bulletLeftDirection, bulletVelocity, 10, circleBulletSprite);
+
+            PlaySoundFX(0);
 
             shootTimer = 0.0f;
         }
@@ -67,7 +71,6 @@ int main()
         DrawText(TextFormat("Active bullets: %d", CountActivePlayerBullets()), 10, 40, 20, WHITE);
         EndDrawing();
     }
-
     CloseWindow();
     return 0;
 }

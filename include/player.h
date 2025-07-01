@@ -2,15 +2,16 @@
 #pragma once
 #include <raylib.h>
 
-typedef struct
+typedef struct Player
 {
     Vector2 position;
-    float width;
     float baseSpeed;
+    float hitboxRadius;
+    float grazeRadius;
     Texture2D texture;
 } Player;
 
-void InitPlayer(Player* player);                        // Create & initialize player
-void UpdatePlayer(Player* player);                      // Update player every frame
-void DrawPlayer(Player* player);                        // Draw player's sprite
-Vector2 PlayerGetBulletSpawnPos(Player* player);        // Ensure player's bullets are spawned from top middle position of the player
+void InitPlayer(Player* player);                                    // Create & initialize player
+void UpdatePlayer(Player* player);                                  // Update player every frame
+void DrawPlayer(Player* player);                                    // Draw player's sprite
+Vector2 PlayerGetBulletSpawnPos(Player* player, float paddingTop);  // Make bullets spawn from top middle of player
