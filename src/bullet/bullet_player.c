@@ -1,4 +1,4 @@
-#include "bullet.h"
+#include "bullet/bullet.h"
 #include "config.h"
 #include <stdio.h>
 
@@ -7,6 +7,12 @@ static Bullet playerBullets[MAX_PLAYER_BULLETS];
 void InitPlayerBullets()
 {
     InitBullets(playerBullets, MAX_PLAYER_BULLETS);
+}
+
+void LoadPlayerBulletTextures()
+{
+    LoadTexture("../assets/bullets/CircleBullet1.png");
+    LoadTexture("../assets/bullets/PlayerBullet1.png");
 }
 
 void SpawnPlayerBulletCircle(Vector2 spawnPosition, Vector2 direction, float speed, float radius, Texture2D sprite)

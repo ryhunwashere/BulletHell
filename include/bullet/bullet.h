@@ -1,8 +1,8 @@
 #pragma once
 #include <raylib.h>
 
-#define MAX_PLAYER_BULLETS 500
-#define MAX_ENEMY_BULLETS 5000
+#define MAX_PLAYER_BULLETS 100
+#define MAX_ENEMY_BULLETS 500
 
 typedef enum
 {

@@ -1,0 +1,62 @@
+#include "player/player_shoot.h"
+#include "bullet/bullet_player.h"
+#include "config.h"
+#include "audio.h"
+#include <raylib.h>
+
+static float shootCooldown = DEFAULT_SHOOT_COOLDOWN;
+static float shootTimer = DEFAULT_SHOOT_TIMER;
+static float bulletVelocity = DEFAULT_BULLET_VELOCITY;
+
+Texture2D circleBulletSprite;
+Texture2D rectBulletSprite;
+static Vector2 rectBulletSize = {50, 20};
+
+void InitPlayerShooting()
+{
+    circleBulletSprite = LoadTexture("../assets/bullets/CircleBullet1.png");
+    rectBulletSprite = LoadTexture("../assets/bullets/PlayerBullet1.png");
+
+    if (circleBulletSprite.id == 0 || rectBulletSprite.id == 0)
+    {
+        TraceLog(LOG_ERROR, "Failed to load bullet textures!");
+    }
+}
+
+void UpdatePlayerShooting(Player *player, float deltaTime)
+{
+    shootTimer += deltaTime;
+
+    if (IsKeyDown(KEY_X) && shootTimer >= shootCooldown)
+    {
+        Vector2 bulletDir = {0, -1};
+
+        Vector2 bulletMidPos = PlayerGetBulletSpawnPos(player, 0, 10);
+
+        Vector2 bulletLeft1Pos = PlayerGetBulletSpawnPos(player, -20, 10);
+        Vector2 bulletLeft2Pos = PlayerGetBulletSpawnPos(player, -40, 10);
+        Vector2 bulletLeft3Pos = PlayerGetBulletSpawnPos(player, -60, 10);
+        
+        Vector2 bulletRight1Pos = PlayerGetBulletSpawnPos(player, 20, 10);
+        Vector2 bulletRight2Pos = PlayerGetBulletSpawnPos(player, 40, 10);
+        Vector2 bulletRight3Pos = PlayerGetBulletSpawnPos(player, 60, 10);
+
+        SpawnPlayerBulletCircle(bulletMidPos, bulletDir, bulletVelocity, 10, circleBulletSprite);
+
+        SpawnPlayerBulletRect(bulletLeft1Pos, bulletDir, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
+        SpawnPlayerBulletRect(bulletLeft2Pos, bulletDir, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
+        SpawnPlayerBulletCircle(bulletLeft3Pos, bulletDir, bulletVelocity, 10, circleBulletSprite);
+
+        SpawnPlayerBulletRect(bulletRight1Pos, bulletDir, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
+        SpawnPlayerBulletRect(bulletRight2Pos, bulletDir, bulletVelocity, rectBulletSize, 0, rectBulletSprite);
+        SpawnPlayerBulletCircle(bulletRight3Pos, bulletDir, bulletVelocity, 10, circleBulletSprite);
+
+        PlaySoundFX(0);
+        shootTimer = 0.0f;
+    }
+}
+
+void UnloadPlayerShooting() {
+    UnloadTexture(circleBulletSprite);
+    UnloadTexture(rectBulletSprite);
+}

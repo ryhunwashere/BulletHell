@@ -1,4 +1,4 @@
-// Module for handling the player
+// Module for initializing player and handling movement
 #pragma once
 #include <raylib.h>
 
@@ -15,7 +15,7 @@ typedef struct Player
 void InitPlayer(Player* player);
 
 // Update player every frame.
-void UpdatePlayer(Player* player);
+void UpdatePlayer(Player *player, float deltaTime);
 
 // Draw player's sprite.
 void DrawPlayer(Player* player);

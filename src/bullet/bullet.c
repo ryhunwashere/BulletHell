@@ -1,4 +1,4 @@
-#include "bullet.h"
+#include "bullet/bullet.h"
 #include <math.h> // for atan2f function
 #include <stdio.h>
 
@@ -88,9 +88,7 @@ void DrawBullet(Bullet bullets[], int maxBullets)
                            (Rectangle){b->position.x, b->position.y, b->size.x, b->size.y}, // dest
                            (Vector2){b->size.x / 2, b->size.y / 2},                         // origin
                            b->rotation,
-                           WHITE);
-            
-            // printf("Drawing bullet with sprite.id=%d, size=(%.1f, %.1f)\n", b->sprite.id, b->size.x, b->size.y);
+                           (Color){ 255, 255, 255, 150 });                                  // reduced bullet opacity
         }
     }
 }

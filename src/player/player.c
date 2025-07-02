@@ -1,4 +1,4 @@
-#include "player.h"
+#include "player/player.h"
 
 const float PLAYER_SCALE = 2;
 
@@ -9,9 +9,14 @@ void InitPlayer(Player *player)
     player->hitboxRadius = 4.0f * PLAYER_SCALE;
     player->grazeRadius = 16.0f * PLAYER_SCALE;
     player->texture = LoadTexture("../assets/player/player_sprite.png");
+
+    if (player->texture.id == 0)
+    {
+        TraceLog(LOG_ERROR, "Failed to load player texture!");
+    }
 }
 
-void UpdatePlayer(Player *player)
+void UpdatePlayer(Player *player, float deltaTime)
 {
     float speed = player->baseSpeed;
 
@@ -19,13 +24,13 @@ void UpdatePlayer(Player *player)
         speed *= 0.5f;
 
     if (IsKeyDown(KEY_RIGHT))
-        player->position.x += speed * GetFrameTime();
+        player->position.x += speed * deltaTime;
     if (IsKeyDown(KEY_LEFT))
-        player->position.x -= speed * GetFrameTime();
+        player->position.x -= speed * deltaTime;
     if (IsKeyDown(KEY_UP))
-        player->position.y -= speed * GetFrameTime();
+        player->position.y -= speed * deltaTime;
     if (IsKeyDown(KEY_DOWN))
-        player->position.y += speed * GetFrameTime();
+        player->position.y += speed * deltaTime;
 }
 
 void DrawPlayer(Player *player)
@@ -52,7 +57,7 @@ void DrawPlayer(Player *player)
         source,
         dest,
         origin,
-        0.0f, // rotation
+        0.0f,
         WHITE);
 
     // Show hitbox when slowed
