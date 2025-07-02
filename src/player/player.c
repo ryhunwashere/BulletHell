@@ -1,11 +1,11 @@
 #include "player/player.h"
-
-const float PLAYER_SCALE = 2;
+#include "config.h"
+#include <raymath.h>        // for clamping the movement
 
 void InitPlayer(Player *player)
 {
     player->position = (Vector2){500, 500};
-    player->baseSpeed = 500.0f;
+    player->baseSpeed = PLAYER_SPEED;
     player->hitboxRadius = 4.0f * PLAYER_SCALE;
     player->grazeRadius = 16.0f * PLAYER_SCALE;
     player->texture = LoadTexture("../assets/player/player_sprite.png");
@@ -21,7 +21,7 @@ void UpdatePlayer(Player *player, float deltaTime)
     float speed = player->baseSpeed;
 
     if (IsKeyDown(KEY_LEFT_SHIFT))
-        speed *= 0.5f;
+        speed = 200.0f;
 
     if (IsKeyDown(KEY_RIGHT))
         player->position.x += speed * deltaTime;
@@ -31,6 +31,10 @@ void UpdatePlayer(Player *player, float deltaTime)
         player->position.y -= speed * deltaTime;
     if (IsKeyDown(KEY_DOWN))
         player->position.y += speed * deltaTime;
+    
+    // Prevent the player to move beyond the game window
+    player->position.x = Clamp(player->position.x, 0.0f, SCREEN_WIDTH);
+    player->position.y = Clamp(player->position.y, 0.0f, SCREEN_HEIGHT);
 }
 
 void DrawPlayer(Player *player)

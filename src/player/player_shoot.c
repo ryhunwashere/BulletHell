@@ -4,9 +4,9 @@
 #include "audio.h"
 #include <raylib.h>
 
-static float shootCooldown = DEFAULT_SHOOT_COOLDOWN;
-static float shootTimer = DEFAULT_SHOOT_TIMER;
-static float bulletVelocity = DEFAULT_BULLET_VELOCITY;
+static float shootCooldown = SHOOT_COOLDOWN;
+static float shootTimer = SHOOT_TIMER;
+static float bulletVelocity = BULLET_VELOCITY;
 
 Texture2D circleBulletSprite;
 Texture2D rectBulletSprite;
@@ -31,15 +31,15 @@ void UpdatePlayerShooting(Player *player, float deltaTime)
     {
         Vector2 bulletDir = {0, -1};
 
-        Vector2 bulletMidPos = PlayerGetBulletSpawnPos(player, 0, 10);
+        Vector2 bulletMidPos = PlayerGetBulletSpawnPos(player, 0, 5);
 
-        Vector2 bulletLeft1Pos = PlayerGetBulletSpawnPos(player, -20, 10);
-        Vector2 bulletLeft2Pos = PlayerGetBulletSpawnPos(player, -40, 10);
-        Vector2 bulletLeft3Pos = PlayerGetBulletSpawnPos(player, -60, 10);
-        
-        Vector2 bulletRight1Pos = PlayerGetBulletSpawnPos(player, 20, 10);
-        Vector2 bulletRight2Pos = PlayerGetBulletSpawnPos(player, 40, 10);
-        Vector2 bulletRight3Pos = PlayerGetBulletSpawnPos(player, 60, 10);
+        Vector2 bulletLeft1Pos = PlayerGetBulletSpawnPos(player, -20, 5);
+        Vector2 bulletLeft2Pos = PlayerGetBulletSpawnPos(player, -40, 5);
+        Vector2 bulletLeft3Pos = PlayerGetBulletSpawnPos(player, -60, 5);
+
+        Vector2 bulletRight1Pos = PlayerGetBulletSpawnPos(player, 20, 5);
+        Vector2 bulletRight2Pos = PlayerGetBulletSpawnPos(player, 40, 5);
+        Vector2 bulletRight3Pos = PlayerGetBulletSpawnPos(player, 60, 5);
 
         SpawnPlayerBulletCircle(bulletMidPos, bulletDir, bulletVelocity, 10, circleBulletSprite);
 
