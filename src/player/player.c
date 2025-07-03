@@ -33,8 +33,8 @@ void UpdatePlayer(Player *player, float deltaTime)
         player->position.y += speed * deltaTime;
     
     // Prevent the player to move beyond the game window
-    player->position.x = Clamp(player->position.x, 0.0f, SCREEN_WIDTH);
-    player->position.y = Clamp(player->position.y, 0.0f, SCREEN_HEIGHT);
+    player->position.x = Clamp(player->position.x, player->hitboxRadius, SCREEN_WIDTH - player->hitboxRadius);
+    player->position.y = Clamp(player->position.y, player->hitboxRadius, SCREEN_HEIGHT - player->hitboxRadius);
 }
 
 void DrawPlayer(Player *player)
