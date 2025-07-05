@@ -3,6 +3,6 @@
 #include <raylib.h>
 #include <player/player.h>
 
-void InitPlayerShooting();
+void InitPlayerShooting(Player *player);
 void UpdatePlayerShooting(Player *player, float deltaTime);
 void UnloadPlayerShooting();

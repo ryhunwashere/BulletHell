@@ -5,6 +5,9 @@
 #include "player/player.h"
 #include "player/player_shoot.h"
 
+// Enemy module
+#include "enemy/enemy.h"
+
 // Bullet module
 #include "bullet/bullet_player.h"
 
@@ -21,7 +24,8 @@ void InitGame()
 {
     InitPlayer(&player);
     InitPlayerBullets();
-    InitPlayerShooting();
+    InitPlayerShooting(&player);
+
     InitAudioComponents();
     PlayMusicTrack(0);
 }
@@ -31,6 +35,7 @@ void UpdateGame(float deltaTime)
     UpdatePlayer(&player, deltaTime);
     UpdatePlayerShooting(&player, deltaTime);
     UpdatePlayerBullet(deltaTime);
+    
     UpdateMusicPlayer();
 }
 

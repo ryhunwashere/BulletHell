@@ -1,8 +1,6 @@
 #pragma once
 #include <raylib.h>
-
-#define MAX_PLAYER_BULLETS 100
-#define MAX_ENEMY_BULLETS 500
+#include "config.h"
 
 typedef enum
 {
@@ -28,5 +26,5 @@ void InitBullets(Bullet bullets[], int maxBullets);
 void SetBulletDefaultTextures(Texture2D circleTexture, Texture2D rectTexture);
 void SpawnBulletCircle(Bullet bullets[], int maxBullets, Vector2 spawnPos, Vector2 direction, float speed, float radius, Texture2D sprite);
 void SpawnBulletRect(Bullet bullets[], int maxBullets, Vector2 spawnPos, Vector2 direction, float speed, Vector2 size, float rotation, Texture2D sprite);
-void UpdateBullet(Bullet bullets[], int maxBullets, float deltaTime, int screenWidth, int screenHeight);
+void UpdateBullet(Bullet bullets[], int maxBullets, float deltaTime);
 void DrawBullet(Bullet bullets[], int maxBullets);

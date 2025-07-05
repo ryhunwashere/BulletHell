@@ -4,12 +4,14 @@
 AudioFX gAudioFX = {0};
 MusicPlayer gMusicPlayer = {0};
 
-int getMusicCount()
+// Get length of musicTracks[].
+static int getMusicCount()
 {
     return sizeof(gAudioFX.sounds) / sizeof(gAudioFX.sounds[0]);
 }
 
-int getSoundCount()
+// Get length of musicTracks[].
+static int getSoundCount()
 {
     return sizeof(gMusicPlayer.musicTracks) / sizeof(gMusicPlayer.musicTracks[0]);
 }

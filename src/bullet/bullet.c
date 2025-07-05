@@ -21,10 +21,10 @@ static void spawnBullet(Bullet bullets[], int maxBullets, Vector2 spawnPos, Vect
             bullets[i].position = spawnPos;
             bullets[i].direction = direction;
             bullets[i].speed = speed;
+            bullets[i].rotation = rotation;
             bullets[i].type = type;
             bullets[i].radius = radius;
             bullets[i].size = size;
-            bullets[i].rotation = rotation;
             bullets[i].sprite = sprite;
             bullets[i].active = true;
             break;
@@ -58,7 +58,7 @@ void SpawnBulletRect(Bullet bullets[], int maxBullets, Vector2 spawnPos, Vector2
     spawnBullet(bullets, maxBullets, spawnPos, direction, speed, BULLET_RECT, 0, size, rotation, sprite);
 }
 
-void UpdateBullet(Bullet bullets[], int maxBullets, float deltaTime, int screenWidth, int screenHeight)
+void UpdateBullet(Bullet bullets[], int maxBullets, float deltaTime)
 {
     for (int i = 0; i < maxBullets; i++)
     {
@@ -66,8 +66,12 @@ void UpdateBullet(Bullet bullets[], int maxBullets, float deltaTime, int screenW
         {
             bullets[i].position.x += bullets[i].direction.x * bullets[i].speed * deltaTime;
             bullets[i].position.y += bullets[i].direction.y * bullets[i].speed * deltaTime;
-
-            if (bullets[i].position.x > screenWidth || bullets[i].position.x < 0 || bullets[i].position.y > screenHeight || bullets[i].position.y < 0)
+            
+            // Deactivate bullets that goes beyond the window + some margins
+            if (bullets[i].position.x > SCREEN_WIDTH + SCREEN_MARGIN ||
+                bullets[i].position.x < 0 - SCREEN_MARGIN || 
+                bullets[i].position.y > SCREEN_HEIGHT + SCREEN_MARGIN || 
+                bullets[i].position.y < 0 - SCREEN_MARGIN)
             {
                 bullets[i].active = false;
             }
