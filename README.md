@@ -1,1 +1,1 @@
-This repository is **deprecated**, because making a game entirely on C is truly a mistake (it gives me pain). Check out [RaylibDanmaku](https://github.com/ryhunwashere/RaylibDanmaku) for the newer version. 
+This repository is **deprecated**, because making a game entirely on C is truly a mistake (it gives me pain). Check out [raylib-danmaku](https://github.com/ryhunwashere/raylib-danmaku) for the newer version. 
